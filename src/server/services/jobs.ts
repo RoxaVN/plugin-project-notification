@@ -1,5 +1,5 @@
 import { BaseService, InferApiSuccessData, inject } from '@roxavn/core/server';
-import { CreateNotificationService } from '@roxavn/module-notification/server';
+import { UpsertNotificationService } from '@roxavn/module-notification/server';
 import { scopes, taskApi } from '@roxavn/module-project/base';
 import { GetTaskApiService } from '@roxavn/module-project/server';
 
@@ -10,8 +10,8 @@ import { serverModule } from '../module.js';
 export class CreateSubTaskNoticeService extends BaseService {
   constructor(
     @inject(GetTaskApiService) private getTaskApiService: GetTaskApiService,
-    @inject(CreateNotificationService)
-    private createNotificationService: CreateNotificationService
+    @inject(UpsertNotificationService)
+    private upsertNotificationService: UpsertNotificationService
   ) {
     super();
   }
@@ -25,7 +25,7 @@ export class CreateSubTaskNoticeService extends BaseService {
     if (task.assignee && task.assignee !== task.userId) {
       userIds.push(task.assignee);
     }
-    await this.createNotificationService.handle({
+    await this.upsertNotificationService.handle({
       action: 'CreateSubTask',
       module: baseModule.name,
       resource: scopes.Task.name,
@@ -41,8 +41,8 @@ export class CreateSubTaskNoticeService extends BaseService {
 export class InprogressTaskNoticeService extends BaseService {
   constructor(
     @inject(GetTaskApiService) private getTaskApiService: GetTaskApiService,
-    @inject(CreateNotificationService)
-    private createNotificationService: CreateNotificationService
+    @inject(UpsertNotificationService)
+    private upsertNotificationService: UpsertNotificationService
   ) {
     super();
   }
@@ -52,7 +52,7 @@ export class InprogressTaskNoticeService extends BaseService {
       taskId: data.request.taskId,
     });
 
-    await this.createNotificationService.handle({
+    await this.upsertNotificationService.handle({
       action: 'UpdateTaskStatus',
       module: baseModule.name,
       resource: scopes.Task.name,
@@ -68,8 +68,8 @@ export class InprogressTaskNoticeService extends BaseService {
 export class DeleteTaskNoticeService extends BaseService {
   constructor(
     @inject(GetTaskApiService) private getTaskApiService: GetTaskApiService,
-    @inject(CreateNotificationService)
-    private createNotificationService: CreateNotificationService
+    @inject(UpsertNotificationService)
+    private upsertNotificationService: UpsertNotificationService
   ) {
     super();
   }
@@ -79,7 +79,7 @@ export class DeleteTaskNoticeService extends BaseService {
       taskId: data.request.taskId,
     });
 
-    await this.createNotificationService.handle({
+    await this.upsertNotificationService.handle({
       action: 'UpdateTaskStatus',
       module: baseModule.name,
       resource: scopes.Task.name,
@@ -95,8 +95,8 @@ export class DeleteTaskNoticeService extends BaseService {
 export class RejectTaskNoticeService extends BaseService {
   constructor(
     @inject(GetTaskApiService) private getTaskApiService: GetTaskApiService,
-    @inject(CreateNotificationService)
-    private createNotificationService: CreateNotificationService
+    @inject(UpsertNotificationService)
+    private upsertNotificationService: UpsertNotificationService
   ) {
     super();
   }
@@ -106,7 +106,7 @@ export class RejectTaskNoticeService extends BaseService {
       taskId: data.request.taskId,
     });
 
-    await this.createNotificationService.handle({
+    await this.upsertNotificationService.handle({
       action: 'UpdateTaskStatus',
       module: baseModule.name,
       resource: scopes.Task.name,
